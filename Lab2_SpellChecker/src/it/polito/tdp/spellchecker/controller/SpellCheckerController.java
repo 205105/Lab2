@@ -50,24 +50,36 @@ public class SpellCheckerController {
     
     @FXML
     void doClearText(ActionEvent event) {
-    	
+    	txtInserimento.setText("");
+    	txtRisultato.setText("");
+    	lblRisultato.setText("");
+    	cmbLingua.setValue("Italiano");
     }
 
     @FXML
     void doSpellCheck(ActionEvent event) {
+    	if(cmbLingua.getValue()==null){
+    		lblRisultato.setText("Seleziona una lingua");
+    	}
     	ItalianDictionary i=new ItalianDictionary();
     	EnglishDictionary e=new EnglishDictionary();
     	List<RichWord> r=new LinkedList<RichWord>();
     	boolean english=false;
     	if(cmbLingua.getValue().compareTo("Italiano")==0){
     		i.loadDictionary();
+    		long a1=System.currentTimeMillis();
     		r=i.spellCheckText(this.dividiTesto());
+    		long a2=System.currentTimeMillis();
     		this.stampe(r, english);
+    		lblTempo.setText("Controllo ortografico completato in "+(a2-a1)*0.001+"secondi");
     	} else if(cmbLingua.getValue().compareTo("English")==0){
     		e.loadDictionary();
+    		long a1=System.currentTimeMillis();
     		r=e.spellCheckText(this.dividiTesto());
+    		long a2=System.currentTimeMillis();
     		english=true;
     		this.stampe(r, english);
+    		lblTempo.setText("Spell check completed in "+(a2-a1)*0.001+"seconds");
     	}
     }
     
@@ -75,22 +87,25 @@ public class SpellCheckerController {
     	boolean check=true;
     	String ris="";
     	for(RichWord t: r){
-    		ris+=t.toString()+" ";
-    		if(t.isCorretta()==false)
+    		//ris+=t.toString()+" ";
+    		if(t.isCorretta()==false){
     			check=false;
+    			ris+=t.toString()+" ";
+    		}
     	}
 		txtRisultato.setText(ris);
 		if(!check && english)
     		lblRisultato.setText("Your text contains errors!");
     	if(!check && !english)
     		lblRisultato.setText("Il tuo testo contiene errori!");
+    	//in caso non ci siano errori potrei inserire la stringa ("il testo e' corretto!") in verde
     }
     
     public List<String> dividiTesto(){
     	List<String> parole=new LinkedList<String>();
     	String testo=txtInserimento.getText();
     	testo.toLowerCase();
-    	StringTokenizer st=new StringTokenizer(testo," "); //bisogna poi inserire la divisione per punto e virgola ragionando che sono l'ultimo carattere di una parola, si dovrebbe poter usare il metodo dello string tokenizer iscontains o una roba cosi
+    	StringTokenizer st=new StringTokenizer(testo,",. "); //bisogna poi inserire la divisione per punto e virgola ragionando che sono l'ultimo carattere di una parola, si dovrebbe poter usare il metodo dello string tokenizer iscontains o una roba cosi
     	while(st.hasMoreTokens()){
     		parole.add(st.nextToken());
     	}
@@ -109,5 +124,6 @@ public class SpellCheckerController {
         lingue.add("English");
         lingue.add("Italiano");
         cmbLingua.getItems().addAll(lingue);
+        cmbLingua.setValue("Italiano"); //e' la lingua predefinita
     }
 }
