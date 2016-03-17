@@ -13,7 +13,7 @@ public class Dictionary {
 	public void loadDictionary(){
 	}
 	
-	/*public List<RichWord> spellCheckText(List<String> inputTextList){ //ricerca "normale"
+	public List<RichWord> spellCheckText(List<String> inputTextList){ //ricerca "normale"
 		List<RichWord> listaAnalizzata=new ArrayList<RichWord>();
 		RichWord t=null;
 		for(String s: inputTextList){
@@ -31,49 +31,40 @@ public class Dictionary {
 			listaAnalizzata.add(t);
 		}
 		return listaAnalizzata;
-	}*/
+	}
+} 
 	
-	public List<RichWord> spellCheckText(List<String> inputTextList){ // ricerca dicotomica
+	
+	/*public List<RichWord> spellCheckText(List<String> inputTextList){ // ricerca dicotomica
 		List<RichWord> listaAnalizzata=new ArrayList<RichWord>();
 		RichWord t=null;
-		boolean flag=false;
 		for(String s: inputTextList){
-			if(!flag){
-				System.out.println("dentro if");
-			while(flag==false){ //il problema e' nel while, non entra qui dentro e di conseguenza non cerca la parola qui dentro
-				System.out.println("dentro while");
-				int i=dizionario.size()/2;
-			if(s.compareTo(dizionario.get(i))==0){
-				flag=true;
+			boolean flag=this.dicotomica(s);
+			if(flag){
+				 t=new RichWord(s, true);
 			} else {
-				if(s.compareTo(dizionario.get(i))>0){
-				//cerco nella prima meta'
-					//elimino tutti gli elementi sopra la meta'
-					while(i<dizionario.size()){
-					dizionario.remove(i);
-					i++;
-					}
-					this.spellCheckText(dizionario);
-			} else {
-				//cerco nella seconda meta'
-				//elimino tutti gli elementi sotto la meta'
-				int j=0;
-				while(j<i){
-					dizionario.remove(j);
-					j++;
-				}
-				this.spellCheckText(dizionario);
+				 t=new RichWord(s, false);
 			}
-			}
-		}
-		if(flag){
-			 t=new RichWord(s, true);
-		} else {
-			 t=new RichWord(s, false);
-		}
-		listaAnalizzata.add(t);
-		}
+			listaAnalizzata.add(t);
 		}
 		return listaAnalizzata;
 	}
-} 
+	
+	public boolean dicotomica(String s){
+		boolean ris=false;
+		int i=((dizionario.size()-1)/2)+1;
+		System.out.println(i);
+		String r=null;
+				while(ris=true){ //bisogna inserire altro nella condizione se no nn esce mai
+					r=dizionario.get(i);
+					System.out.println(r);
+					if(s.compareTo(r)>0)
+						i=(1/2)*i; //sbagliato moltiplicare cosi', basta fare una prova con dei numeri veri
+					else if(s.compareTo(r)<0) 
+						i=(3/2)*i; //sbagliato moltiplicare cosi', basta fare una prova con dei numeri veri
+					else
+						ris=true;
+				}
+		return ris;
+	}
+} */

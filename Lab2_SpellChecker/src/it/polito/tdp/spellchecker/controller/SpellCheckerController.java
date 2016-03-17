@@ -1,5 +1,6 @@
 package it.polito.tdp.spellchecker.controller;
 
+import java.awt.Color;
 import java.net.URL;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -15,11 +16,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 public class SpellCheckerController {
 
 	private List<String> lingue=new LinkedList<String>();
+	List<Text> testo=new LinkedList<Text>();
 	
     @FXML
     private ResourceBundle resources;
@@ -34,7 +39,7 @@ public class SpellCheckerController {
     private Button bttSpellCheck;
 
     @FXML
-    private TextArea txtRisultato;
+    private TextFlow txtRisultato;
 
     @FXML
     private Label lblRisultato;
@@ -51,9 +56,11 @@ public class SpellCheckerController {
     @FXML
     void doClearText(ActionEvent event) {
     	txtInserimento.setText("");
-    	txtRisultato.setText("");
+    	testo.clear();
+    	txtRisultato.getChildren().clear();
     	lblRisultato.setText("");
     	cmbLingua.setValue("Italiano");
+    	lblTempo.setText("");
     }
 
     @FXML
@@ -82,23 +89,48 @@ public class SpellCheckerController {
     		lblTempo.setText("Spell check completed in "+(a2-a1)*0.001+"seconds");
     	}
     }
+    //per stampare testo colorato o in generale fare modifiche al FONT del testo bisogna crearsi un oggetto della classe Text
+    //(classe che bisogna importare) e poi in questo oggetto inserire la stringa e poi utilizzare i metodi che propone text per modificare
+    //il testo. Quando si vuole inserire un insieme di Text in una casella di testo o da qualche parte bisogna aggiungere i vari Text
+    //ad una lista che e' chiamata getChildren e che si chiama con getChildren(). quindi per aggiungere un elemento alla lista bisogna 
+    //scrivere ****.getChildren().add() e dentro add si mette il Text mentre per eliminare tutto da getChildren bisogna usare getChildren().clear()
     
     void stampe(List<RichWord> r, boolean english){
     	boolean check=true;
-    	String ris="";
+    	//String ris="";
     	for(RichWord t: r){
-    		//ris+=t.toString()+" ";
+    		Text y=new Text();
     		if(t.isCorretta()==false){
     			check=false;
-    			ris+=t.toString()+" ";
+    			String s=t.toString()+" ";
+    			y.setText(s);
+    			y.setFill(javafx.scene.paint.Color.RED);
+    			testo.add(y);
+    			//ris+=t.toString()+" ";
+    		} else {
+    			//ris+=t.toString()+" ";
+    			y.setText(t.toString()+" ");
+    			testo.add(y);
     		}
     	}
-		txtRisultato.setText(ris);
-		if(!check && english)
+    	for(Text t: testo)
+    		txtRisultato.getChildren().add(t);
+		if(!check && english){
     		lblRisultato.setText("Your text contains errors!");
-    	if(!check && !english)
+    		lblRisultato.setTextFill(javafx.scene.paint.Color.RED);
+		}
+    	if(!check && !english){
     		lblRisultato.setText("Il tuo testo contiene errori!");
-    	//in caso non ci siano errori potrei inserire la stringa ("il testo e' corretto!") in verde
+    		lblRisultato.setTextFill(javafx.scene.paint.Color.RED);
+    	}
+    	if(check && english){
+    		lblRisultato.setText("Your text is correct!");
+    		lblRisultato.setTextFill(javafx.scene.paint.Color.GREEN);
+		}
+    	if(check && !english){
+    		lblRisultato.setText("Il tuo testo e' corretto!");
+    		lblRisultato.setTextFill(javafx.scene.paint.Color.GREEN);
+    	}
     }
     
     public List<String> dividiTesto(){
