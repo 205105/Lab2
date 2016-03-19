@@ -52,19 +52,21 @@ public class Dictionary {
 	
 	public boolean dicotomica(String s){
 		boolean ris=false;
-		int i=((dizionario.size()-1)/2)+1;
-		System.out.println(i);
-		String r=null;
-				while(ris=true){ //bisogna inserire altro nella condizione se no nn esce mai
-					r=dizionario.get(i);
-					System.out.println(r);
-					if(s.compareTo(r)>0)
-						i=(1/2)*i; //sbagliato moltiplicare cosi', basta fare una prova con dei numeri veri
-					else if(s.compareTo(r)<0) 
-						i=(3/2)*i; //sbagliato moltiplicare cosi', basta fare una prova con dei numeri veri
-					else
-						ris=true;
-				}
+		int i=0;//((dizionario.size()-1)/2)+1;
+		int min=0;
+		int max=dizionario.size()-1;
+		while(min<=max){
+			i=(min+max)/2; //alcune parole non le trova tipo scuola, prova, ciao
+			String r=dizionario.get(i);
+			System.out.println(r);
+			if(s.compareTo(r)<0){
+				max=i-1;
+			} else if(s.compareTo(r)>0){
+				min=i+1;
+			} else if(s.compareTo(r)==0){
+				return ris=true;
+			}
+		}
 		return ris;
 	}
 } */
