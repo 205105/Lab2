@@ -19,7 +19,7 @@ public class Dictionary {
 		for(String s: inputTextList){
 			boolean flag=false;
 			for(String r: dizionario){
-				if(s.compareTo(r)==0){
+				if(s.equals(r)){
 					flag=true;
 				}
 			}
@@ -35,7 +35,7 @@ public class Dictionary {
 } 
 	
 	
-	/*public List<RichWord> spellCheckText(List<String> inputTextList){ // ricerca dicotomica
+/*	public List<RichWord> spellCheckText(List<String> inputTextList){ // ricerca dicotomica
 		List<RichWord> listaAnalizzata=new ArrayList<RichWord>();
 		RichWord t=null;
 		for(String s: inputTextList){
@@ -50,13 +50,13 @@ public class Dictionary {
 		return listaAnalizzata;
 	}
 	
-	public boolean dicotomica(String s){
+	public boolean dicotomica(String s){ //funziona se pero' nel dizionario non ci sono parole con caratteri speciali(apostrofi, trattini ecc) perche' questi vengono sempre prima di qualsiasi lettera
 		boolean ris=false;
-		int i=0;//((dizionario.size()-1)/2)+1;
+		int i=0;
 		int min=0;
 		int max=dizionario.size()-1;
 		while(min<=max){
-			i=(min+max)/2; //alcune parole non le trova tipo scuola, prova, ciao
+			i=(min+max)/2; 
 			String r=dizionario.get(i);
 			System.out.println(r);
 			if(s.compareTo(r)<0){
